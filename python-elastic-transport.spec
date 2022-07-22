@@ -8,7 +8,7 @@ across all Elastic services rather than only Elasticsearch.}
 
 Name:		python-%{pypi_name}
 Version:	8.1.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Transport classes and utilities shared among Python Elastic
 
 License:	ASL 2.0
@@ -45,5 +45,8 @@ rm -rf elastic_transport.egg-info
 %{python3_sitelib}/elastic_transport-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 8.1.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
 * Sat May 21 2022 Ali Erdinc Koroglu <aekoroglu@fedorapackage.org> - 8.1.2-1
 - Initial package
