@@ -1,0 +1,5 @@
+* Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 8.1.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
+* Sat May 21 2022 Ali Erdinc Koroglu <aekoroglu@fedoraproject.org> - 8.1.2-1
+- Initial package

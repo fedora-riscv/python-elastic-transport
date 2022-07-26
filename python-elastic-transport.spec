@@ -1,52 +1,59 @@
-%global pypi_name elastic-transport
-
-%global _description %{expand:
+%global srcname elastic-transport
+%global _desc %{expand: \
 Transport classes and utilities shared among Python Elastic client libraries
 
 This library was lifted from elasticsearch-py and then transformed to be used
 across all Elastic services rather than only Elasticsearch.}
 
-Name:		python-%{pypi_name}
+Name:		python-%{srcname}
 Version:	8.1.2
-Release:	2%{?dist}
+Release:	%autorelease
 Summary:	Transport classes and utilities shared among Python Elastic
 
 License:	ASL 2.0
 URL:		https://github.com/elastic/elastic-transport-python
-Source0:	%{pypi_source}
+Source0:	%{url}/archive/v%{version}/%{srcname}-%{version}.tar.gz
 
 BuildArch:	noarch
 
-%description
-%{summary}
+BuildRequires:	python3-devel
+BuildRequires:	python3-pytest-aiohttp
+BuildRequires:	python3-pytest-cov
+BuildRequires:	python3-pytest-httpserver
+BuildRequires:	python3-pytest-mock
+BuildRequires:	python3-requests
+BuildRequires:	python3-trustme
 
-%package -n python3-%{pypi_name}
+%description %{_desc}
+
+%package -n python3-%{srcname}
 Summary:	%{summary}
-BuildRequires:	python%{python3_pkgversion}-devel
-BuildRequires:	%{py3_dist setuptools}
 
-%description -n python3-%{pypi_name} %_description
+%description -n python3-%{srcname} %{_desc}
 
 %prep
-%autosetup -n %{pypi_name}-%{version}
-rm -rf elastic_transport.egg-info
+%autosetup -n %{srcname}-python-%{version}
+
+# Use the standard library instead of a backport
+sed -i -e 's/^import mock/from unittest import mock/' \
+       -e 's/^from mock import /from unittest.mock import /' \
+    tests/node/*.py
+
+%generate_buildrequires
+%pyproject_buildrequires -r
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files elastic_transport
 
-%files -n python3-%{pypi_name}
-%doc CHANGELOG.md
-%doc README.md
-%license LICENSE
-%{python3_sitelib}/elastic_transport
-%{python3_sitelib}/elastic_transport-%{version}-py%{python3_version}.egg-info
+%check
+%pytest -v -k 'not test_http_aiohttp and not test_urllib3_chain_certs and not test_tls_versions and not test_httpbin and not test_logging'
+
+%files -n python3-%{srcname} -f %{pyproject_files}
+%doc CHANGELOG.md README.md
 
 %changelog
-* Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 8.1.2-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Sat May 21 2022 Ali Erdinc Koroglu <aekoroglu@fedorapackage.org> - 8.1.2-1
-- Initial package
+%autochangelog
