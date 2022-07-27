@@ -17,12 +17,6 @@ Source0:	%{url}/archive/v%{version}/%{srcname}-%{version}.tar.gz
 BuildArch:	noarch
 
 BuildRequires:	python3-devel
-BuildRequires:	python3-pytest-aiohttp
-BuildRequires:	python3-pytest-cov
-BuildRequires:	python3-pytest-httpserver
-BuildRequires:	python3-pytest-mock
-BuildRequires:	python3-requests
-BuildRequires:	python3-trustme
 
 %description %{_desc}
 
@@ -32,7 +26,7 @@ Summary:	%{summary}
 %description -n python3-%{srcname} %{_desc}
 
 %prep
-%autosetup -n %{srcname}-python-%{version}
+%autosetup -n %{srcname}-%{version}
 
 # Use the standard library instead of a backport
 sed -i -e 's/^import mock/from unittest import mock/' \
@@ -40,7 +34,7 @@ sed -i -e 's/^import mock/from unittest import mock/' \
     tests/node/*.py
 
 %generate_buildrequires
-%pyproject_buildrequires -r
+%pyproject_buildrequires -r -x develop
 
 %build
 %pyproject_wheel
