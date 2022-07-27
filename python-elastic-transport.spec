@@ -26,7 +26,7 @@ Summary:	%{summary}
 %description -n python3-%{srcname} %{_desc}
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n %{srcname}-python-%{version}
 
 # Use the standard library instead of a backport
 sed -i -e 's/^import mock/from unittest import mock/' \
