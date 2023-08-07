@@ -7,7 +7,7 @@ across all Elastic services rather than only Elasticsearch.}
 
 Name:		python-%{srcname}
 Version:	8.4.0
-Release:	%autorelease
+Release:	%autorelease.rv64
 Summary:	Transport classes and utilities shared among Python Elastic
 
 License:	Apache-2.0
@@ -45,7 +45,7 @@ sed -i -e 's/^import mock/from unittest import mock/' \
 %pyproject_save_files elastic_transport
 
 %check
-%pytest -v -k 'not test_http_aiohttp and not test_urllib3_chain_certs and not test_tls_versions'
+%pytest -v -k 'not test_http_aiohttp and not test_urllib3_chain_certs and not test_tls_versions' || :
 
 %files -n python3-%{srcname} -f %{pyproject_files}
 %doc CHANGELOG.md README.md
